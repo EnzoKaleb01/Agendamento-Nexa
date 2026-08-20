@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sinal perdido · Nexa Web</title>
+<meta name="description" content="Página não encontrada ou sem conexão com a internet.">
+<meta name="theme-color" content="#04060c">
+<meta name="robots" content="noindex, follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Orbitron:wght@700;800;900&family=Sora:wght@400;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#04060c; --panel:#0d1220;
+  --line:rgba(255,255,255,0.08); --ink:#eef2fb; --ink-dim:#8792ab;
+  --silver:#c7cedd; --accent:#2f6fed; --accent-light:#7db4ff;
+  --accent-dark:#1c4dc4; --accent-soft:rgba(47,111,237,0.14);
+  --warn:#f0a63c; --warn-soft:rgba(240,166,60,0.12);
+  --sig:var(--accent); --sig-light:var(--accent-light); --sig-soft:var(--accent-soft);
+}
+body.offline{ --sig:var(--warn); --sig-light:#ffc978; --sig-soft:var(--warn-soft); }
+
+*{box-sizing:border-box;}
+html,body{ height:100%; }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:8vh 7vw calc(8vh + env(safe-area-inset-bottom));
+  min-height:100dvh;
+}
+::selection{ background:var(--accent); color:#04060c; }
+
+/* ---------- CAMADAS DE FUNDO ---------- */
+#stars{
+  position:fixed; inset:0; z-index:-3; pointer-events:none; background-color:var(--bg);
+  background-image:
+    radial-gradient(1.6px 1.6px at 15% 22%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 32% 68%, #fff, transparent 60%),
+    radial-gradient(1.8px 1.8px at 48% 12%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 63% 42%, #fff, transparent 60%),
+    radial-gradient(1.4px 1.4px at 78% 78%, #fff, transparent 60%),
+    radial-gradient(1.1px 1.1px at 8% 85%, #fff, transparent 60%),
+    radial-gradient(1.6px 1.6px at 90% 25%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 25% 45%, #fff, transparent 60%),
+    radial-gradient(1.4px 1.4px at 55% 90%, #fff, transparent 60%),
+    radial-gradient(1.1px 1.1px at 85% 60%, #fff, transparent 60%),
+    radial-gradient(1.3px 1.3px at 5% 5%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 70% 8%, #fff, transparent 60%);
+  background-repeat:repeat; background-size:340px 340px;
+  opacity:.5; animation:twinkle 6s ease-in-out infinite alternate;
+  transition:opacity 900ms ease;
+}
+body.offline #stars{ opacity:.22; }
+@keyframes twinkle{ 0%{opacity:.34;} 100%{opacity:.62;} }
+
+#halo{
+  position:fixed; top:50%; left:50%; width:min(920px,150vw); height:min(920px,150vw);
+  transform:translate(-50%,-50%); z-index:-2; pointer-events:none;
+  background:radial-gradient(circle at center, var(--sig-soft), transparent 62%);
+  filter:blur(30px); transition:background 900ms ease;
+}
+
+/* varredura de sinal: linha que atravessa a tela devagar */
+#sweep{
+  position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;
+}
+#sweep i{
+  position:absolute; left:-10%; right:-10%; height:1px; top:0;
+  background:linear-gradient(90deg, transparent, var(--sig-light), transparent);
+  opacity:.22; animation:sweep 7.5s cubic-bezier(.55,0,.45,1) infinite;
+}
+@keyframes sweep{
+  0%{ transform:translateY(-4vh); opacity:0; }
+  12%{ opacity:.24; }
+  88%{ opacity:.24; }
+  100%{ transform:translateY(104vh); opacity:0; }
+}
+
+/* ---------- MARCA ---------- */
+.lock{
+  display:flex; align-items:center; gap:9px; margin-bottom:clamp(28px,6vh,54px);
+  font-family:'Montserrat',system-ui,sans-serif; font-weight:800;
+  font-size:.82rem; letter-spacing:3px; opacity:.75;
+}
+.lock .n{ color:var(--silver); }
+.lock .w{ color:var(--sig); transition:color 900ms ease; }
+.lock svg{ width:22px; height:22px; opacity:.9; }
+
+/* ---------- NÚCLEO 404 ---------- */
+.core{
+  position:relative;
+  display:flex; align-items:center; justify-content:center; gap:clamp(2px,1.4vw,16px);
+}
+.core .d{
+  font-family:'Orbitron',system-ui,sans-serif; font-weight:900;
+  font-size:clamp(4.6rem,20vw,11rem); line-height:.86; letter-spacing:3px;
+  background:linear-gradient(168deg,#ffffff 14%,var(--silver) 40%,var(--sig) 80%,var(--accent-dark) 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  transition:background 900ms ease;
+}
+.core .d.glitch{ animation:glitch 2.6s steps(1) infinite; }
+@keyframes glitch{
+  0%,92%,100%{ transform:none; opacity:1; }
+  93%{ transform:translateX(-3px) skewX(-6deg); opacity:.72; }
+  94.5%{ transform:translateX(4px); opacity:1; }
+  96%{ transform:translateX(-1px) skewX(3deg); opacity:.85; }
+}
+
+.mark-wrap{
+  position:relative; flex-shrink:0;
+  width:clamp(4.1rem,17vw,9.4rem); height:clamp(4.1rem,17vw,9.4rem);
+  display:grid; place-items:center;
+}
+.mark{
+  width:100%; height:100%; position:relative; z-index:2;
+  animation:orbit 16s linear infinite;
+  filter:drop-shadow(0 0 30px var(--sig-soft));
+}
+@keyframes orbit{ to{ transform:rotate(360deg); } }
+
+/* anéis de sinal saindo do símbolo */
+.ring{
+  position:absolute; inset:0; border-radius:50%; z-index:1;
+  border:1px solid var(--sig-light); opacity:0;
+  animation:pulse 3.4s cubic-bezier(.2,.7,.3,1) infinite;
+  transition:border-color 900ms ease;
+}
+.ring:nth-child(2){ animation-delay:1.13s; }
+.ring:nth-child(3){ animation-delay:2.26s; }
+@keyframes pulse{
+  0%{ transform:scale(.62); opacity:.5; }
+  100%{ transform:scale(1.9); opacity:0; }
+}
+
+/* ---------- TEXTO ---------- */
+h1{
+  font-family:'Sora',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(1.28rem,4.4vw,1.95rem); letter-spacing:.2px;
+  margin:clamp(20px,4vh,34px) 0 14px;
+}
+p.msg{
+  max-width:40ch; margin:0; color:var(--ink-dim);
+  font-family:'Sora',system-ui,sans-serif; font-weight:400;
+  font-size:clamp(.92rem,2.6vw,1.02rem); line-height:1.7;
+}
+
+/* ---------- STATUS ---------- */
+.status{
+  margin-top:clamp(30px,6vh,52px);
+  display:inline-flex; align-items:center; gap:10px;
+  padding:11px 20px; border-radius:999px;
+  border:1px solid var(--line); background:rgba(13,18,32,.72);
+  backdrop-filter:blur(10px);
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink-dim);
+  max-width:88vw;
+}
+.dot{
+  width:7px; height:7px; border-radius:50%; background:var(--sig); flex-shrink:0;
+  box-shadow:0 0 0 0 var(--sig-soft); animation:blip 1.7s ease-out infinite;
+  transition:background 900ms ease;
+}
+@keyframes blip{
+  0%{ box-shadow:0 0 0 0 var(--sig-soft); opacity:1; }
+  70%{ box-shadow:0 0 0 9px transparent; opacity:.45; }
+  100%{ box-shadow:0 0 0 0 transparent; opacity:1; }
+}
+.status em{ font-style:normal; color:var(--sig-light); transition:color 900ms ease; }
+.ellipsis::after{ content:''; animation:dots 1.6s steps(4,end) infinite; }
+@keyframes dots{ 0%{content:'';} 25%{content:'.';} 50%{content:'..';} 75%{content:'...';} }
+
+.trace{
+  margin-top:16px; font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:.66rem; letter-spacing:.5px; color:#4d566d;
+  max-width:86vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition-duration:.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="markBlueGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" style="stop-color:var(--sig-light)"/>
+      <stop offset="100%" style="stop-color:var(--accent-dark)"/>
+    </linearGradient>
+    <linearGradient id="markSilverGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:var(--silver)"/>
+    </linearGradient>
+    <g id="nexaMarkShape">
+      <path d="M17.2 41.2 A34 34 0 1 1 74 74" fill="none" stroke="url(#markBlueGrad)" stroke-width="7" stroke-linecap="round"/>
+      <path d="M28.8 71.2 A30 30 0 0 0 79 42.2" fill="none" stroke="url(#markSilverGrad)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M24 27 L24 49 L48 74 L48 49 Z" fill="url(#markBlueGrad)"/>
+      <path d="M49 40 L57 63 L65 48 L73 63 L81 40" fill="none" stroke="url(#markSilverGrad)" stroke-width="7.5" stroke-linecap="square" stroke-linejoin="miter"/>
+    </g>
+  </defs>
+</svg>
+
+<div id="stars" aria-hidden="true"></div>
+<div id="halo" aria-hidden="true"></div>
+<div id="sweep" aria-hidden="true"><i></i></div>
+
+<div class="lock">
+  <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nexaMarkShape"></use></svg>
+  <span class="n">NEXA</span><span class="w">WEB</span>
+</div>
+
+<div class="core" role="img" aria-label="Erro 404">
+  <span class="d glitch">4</span>
+  <span class="mark-wrap">
+    <span class="ring" aria-hidden="true"></span>
+    <span class="ring" aria-hidden="true"></span>
+    <span class="ring" aria-hidden="true"></span>
+    <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#nexaMarkShape"></use></svg>
+  </span>
+  <span class="d glitch">4</span>
+</div>
+
+<h1 id="title">Essa página não existe por aqui</h1>
+<p class="msg" id="msg">O endereço pode ter mudado de lugar ou o link veio digitado errado.</p>
+
+<div class="status">
+  <span class="dot" aria-hidden="true"></span>
+  <span id="statusText">erro 404 · <em>página não encontrada</em></span>
+</div>
+<div class="trace" id="trace"></div>
+
+<script>
+(function(){
+  var $ = function(i){ return document.getElementById(i); };
+
+  function estadoOffline(){
+    document.body.classList.add('offline');
+    document.title = 'Sem conexão · Nexa Web';
+    $('title').textContent = 'Você está sem conexão';
+    $('msg').textContent = 'A internet caiu ou o sinal está fraco. Assim que voltar, esta página se recarrega sozinha.';
+    $('statusText').innerHTML = 'sem internet · <em class="ellipsis">reconectando</em>';
+    $('trace').textContent = '';
+  }
+
+  function estado404(){
+    document.body.classList.remove('offline');
+    var caminho = window.location.pathname + window.location.search;
+    if(caminho && caminho !== '/'){
+      $('trace').textContent = 'endereço procurado: ' + caminho;
+    }
+  }
+
+  if(navigator.onLine === false){ estadoOffline(); } else { estado404(); }
+
+  /* volta sozinho quando a internet retorna */
+  window.addEventListener('online', function(){ location.reload(); });
+  window.addEventListener('offline', estadoOffline);
+
+  setInterval(function(){
+    if(!document.body.classList.contains('offline')) return;
+    fetch(location.href, { method:'HEAD', cache:'no-store' })
+      .then(function(){ location.reload(); })
+      .catch(function(){});
+  }, 6000);
+})();
+</script>
+</body>
+</html>
