@@ -2,273 +2,405 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Sinal perdido · Nexa Web</title>
-<meta name="description" content="Página não encontrada ou sem conexão com a internet.">
-<meta name="theme-color" content="#04060c">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Página não encontrada · Nexa Web</title>
+<meta name="description" content="Essa página não existe mais no site da Nexa Web. Volte ao início e veja os planos, o portfólio e agende seu site.">
 <meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#05050a">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231fae5f'/%3E%3Cstop offset='50%25' stop-color='%232f6fed'/%3E%3Cstop offset='100%25' stop-color='%238b3ff0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M24 27 L24 49 L48 74 L48 49 Z' fill='url(%23g)'/%3E%3Cpath d='M49 40 L57 63 L65 48 L73 63 L81 40' fill='none' stroke='%23dfe2ee' stroke-width='7.5'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Orbitron:wght@700;800;900&family=Sora:wght@400;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
+*,*::before,*::after{box-sizing:border-box}
 :root{
-  --bg:#04060c; --panel:#0d1220;
-  --line:rgba(255,255,255,0.08); --ink:#eef2fb; --ink-dim:#8792ab;
-  --silver:#c7cedd; --accent:#2f6fed; --accent-light:#7db4ff;
-  --accent-dark:#1c4dc4; --accent-soft:rgba(47,111,237,0.14);
-  --warn:#f0a63c; --warn-soft:rgba(240,166,60,0.12);
-  --sig:var(--accent); --sig-light:var(--accent-light); --sig-soft:var(--accent-soft);
+  --void:#05050a;
+  --panel:rgba(255,255,255,.035);
+  --line:rgba(255,255,255,.10);
+  --line-2:rgba(255,255,255,.18);
+  --ink:#f3f4f8;
+  --ink-dim:#9295a6;
+  --ink-faint:#5d6070;
+  --ir-1:#1fae5f;
+  --ir-2:#2f6fed;
+  --ir-3:#8b3ff0;
+  --ir-4:#f2861a;
+  --r-pill:999px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shell:min(1240px,92vw);
 }
-body.offline{ --sig:var(--warn); --sig-light:#ffc978; --sig-soft:var(--warn-soft); }
-
-*{box-sizing:border-box;}
-html,body{ height:100%; }
+html{-webkit-text-size-adjust:100%}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
-  overflow:hidden; -webkit-font-smoothing:antialiased;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; padding:8vh 7vw calc(8vh + env(safe-area-inset-bottom));
-  min-height:100dvh;
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;line-height:1.6;
+  min-height:100svh;overflow-x:hidden;
 }
-::selection{ background:var(--accent); color:#04060c; }
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ir-2);color:#fff}
 
-/* ---------- CAMADAS DE FUNDO ---------- */
-#stars{
-  position:fixed; inset:0; z-index:-3; pointer-events:none; background-color:var(--bg);
-  background-image:
-    radial-gradient(1.6px 1.6px at 15% 22%, #fff, transparent 60%),
-    radial-gradient(1.2px 1.2px at 32% 68%, #fff, transparent 60%),
-    radial-gradient(1.8px 1.8px at 48% 12%, #fff, transparent 60%),
-    radial-gradient(1.2px 1.2px at 63% 42%, #fff, transparent 60%),
-    radial-gradient(1.4px 1.4px at 78% 78%, #fff, transparent 60%),
-    radial-gradient(1.1px 1.1px at 8% 85%, #fff, transparent 60%),
-    radial-gradient(1.6px 1.6px at 90% 25%, #fff, transparent 60%),
-    radial-gradient(1.2px 1.2px at 25% 45%, #fff, transparent 60%),
-    radial-gradient(1.4px 1.4px at 55% 90%, #fff, transparent 60%),
-    radial-gradient(1.1px 1.1px at 85% 60%, #fff, transparent 60%),
-    radial-gradient(1.3px 1.3px at 5% 5%, #fff, transparent 60%),
-    radial-gradient(1.2px 1.2px at 70% 8%, #fff, transparent 60%);
-  background-repeat:repeat; background-size:340px 340px;
-  opacity:.5; animation:twinkle 6s ease-in-out infinite alternate;
-  transition:opacity 900ms ease;
+#bg-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#vignette{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(5,5,10,.9) 0%,rgba(5,5,10,.6) 32%,rgba(5,5,10,.1) 55%,transparent 70%),
+    radial-gradient(120% 80% at 50% 0%,transparent 40%,rgba(0,0,0,.6) 100%);
 }
-body.offline #stars{ opacity:.22; }
-@keyframes twinkle{ 0%{opacity:.34;} 100%{opacity:.62;} }
-
-#halo{
-  position:fixed; top:50%; left:50%; width:min(920px,150vw); height:min(920px,150vw);
-  transform:translate(-50%,-50%); z-index:-2; pointer-events:none;
-  background:radial-gradient(circle at center, var(--sig-soft), transparent 62%);
-  filter:blur(30px); transition:background 900ms ease;
+@media(max-width:760px){
+  #vignette{background:linear-gradient(180deg,rgba(5,5,10,.4) 0%,rgba(5,5,10,.78) 34%,rgba(5,5,10,.95) 100%)}
+}
+#grain{
+  position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  animation:grainShift 6s steps(6) infinite;
+}
+@keyframes grainShift{
+  0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}
+  60%{transform:translate(-2%,-2%)}80%{transform:translate(3%,1%)}100%{transform:translate(0,0)}
 }
 
-/* varredura de sinal: linha que atravessa a tela devagar */
-#sweep{
-  position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;
-}
-#sweep i{
-  position:absolute; left:-10%; right:-10%; height:1px; top:0;
-  background:linear-gradient(90deg, transparent, var(--sig-light), transparent);
-  opacity:.22; animation:sweep 7.5s cubic-bezier(.55,0,.45,1) infinite;
-}
-@keyframes sweep{
-  0%{ transform:translateY(-4vh); opacity:0; }
-  12%{ opacity:.24; }
-  88%{ opacity:.24; }
-  100%{ transform:translateY(104vh); opacity:0; }
-}
 
-/* ---------- MARCA ---------- */
-.lock{
-  display:flex; align-items:center; gap:9px; margin-bottom:clamp(28px,6vh,54px);
-  font-family:'Montserrat',system-ui,sans-serif; font-weight:800;
-  font-size:.82rem; letter-spacing:3px; opacity:.75;
+.stage{
+  position:relative;z-index:3;width:var(--shell);margin:0 auto;
+  min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:120px 0 90px;
 }
-.lock .n{ color:var(--silver); }
-.lock .w{ color:var(--sig); transition:color 900ms ease; }
-.lock svg{ width:22px; height:22px; opacity:.9; }
-
-/* ---------- NÚCLEO 404 ---------- */
-.core{
-  position:relative;
-  display:flex; align-items:center; justify-content:center; gap:clamp(2px,1.4vw,16px);
+.inner{max-width:min(680px,100%)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:12px;margin-bottom:18px;
 }
-.core .d{
-  font-family:'Orbitron',system-ui,sans-serif; font-weight:900;
-  font-size:clamp(4.6rem,20vw,11rem); line-height:.86; letter-spacing:3px;
-  background:linear-gradient(168deg,#ffffff 14%,var(--silver) 40%,var(--sig) 80%,var(--accent-dark) 100%);
-  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-  transition:background 900ms ease;
+.eyebrow::before{content:'';width:34px;height:1px;background:linear-gradient(90deg,var(--ir-1),var(--ir-3))}
+.code{
+  font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 120;font-weight:800;
+  text-transform:uppercase;font-size:clamp(5rem,20vw,13rem);line-height:.82;letter-spacing:-.045em;
+  margin:0 0 6px;
+  background:linear-gradient(96deg,#fff 6%,var(--ir-1) 24%,var(--ir-2) 44%,var(--ir-3) 64%,var(--ir-4) 84%,#fff 98%);
+  background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:sheen 9s linear infinite;
 }
-.core .d.glitch{ animation:glitch 2.6s steps(1) infinite; }
-@keyframes glitch{
-  0%,92%,100%{ transform:none; opacity:1; }
-  93%{ transform:translateX(-3px) skewX(-6deg); opacity:.72; }
-  94.5%{ transform:translateX(4px); opacity:1; }
-  96%{ transform:translateX(-1px) skewX(3deg); opacity:.85; }
-}
-
-.mark-wrap{
-  position:relative; flex-shrink:0;
-  width:clamp(4.1rem,17vw,9.4rem); height:clamp(4.1rem,17vw,9.4rem);
-  display:grid; place-items:center;
-}
-.mark{
-  width:100%; height:100%; position:relative; z-index:2;
-  animation:orbit 16s linear infinite;
-  filter:drop-shadow(0 0 30px var(--sig-soft));
-}
-@keyframes orbit{ to{ transform:rotate(360deg); } }
-
-/* anéis de sinal saindo do símbolo */
-.ring{
-  position:absolute; inset:0; border-radius:50%; z-index:1;
-  border:1px solid var(--sig-light); opacity:0;
-  animation:pulse 3.4s cubic-bezier(.2,.7,.3,1) infinite;
-  transition:border-color 900ms ease;
-}
-.ring:nth-child(2){ animation-delay:1.13s; }
-.ring:nth-child(3){ animation-delay:2.26s; }
-@keyframes pulse{
-  0%{ transform:scale(.62); opacity:.5; }
-  100%{ transform:scale(1.9); opacity:0; }
-}
-
-/* ---------- TEXTO ---------- */
+@keyframes sheen{to{background-position:220% 0}}
 h1{
-  font-family:'Sora',system-ui,sans-serif; font-weight:800;
-  font-size:clamp(1.28rem,4.4vw,1.95rem); letter-spacing:.2px;
-  margin:clamp(20px,4vh,34px) 0 14px;
+  font-family:'Archivo',sans-serif;font-variation-settings:'wdth' 116;font-weight:800;
+  text-transform:uppercase;font-size:clamp(1.5rem,4.4vw,2.7rem);line-height:.98;letter-spacing:-.025em;
+  margin:0 0 18px;
 }
-p.msg{
-  max-width:40ch; margin:0; color:var(--ink-dim);
-  font-family:'Sora',system-ui,sans-serif; font-weight:400;
-  font-size:clamp(.92rem,2.6vw,1.02rem); line-height:1.7;
+.lead{color:var(--ink-dim);max-width:46ch;margin:0 0 12px;font-size:.97rem}
+
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:38px}
+.btn-primary,.btn-ghost{
+  display:inline-flex;align-items:center;gap:12px;cursor:pointer;
+  border-radius:var(--r-pill);padding:15px 26px;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .35s,background .35s;
+}
+.btn-primary{
+  border:0;color:#07070d;background:linear-gradient(105deg,#fff,#dfe2ee 45%,#fff);
+  box-shadow:0 12px 34px rgba(255,255,255,.14),inset 0 1px 0 #fff;position:relative;overflow:hidden;
+}
+.btn-primary .arrow{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;background:#07070d;color:#fff;
+  display:grid;place-items:center;transition:transform .5s var(--ease);
+}
+.btn-primary .arrow svg{width:15px;height:15px;fill:#fff}
+.btn-primary::after{
+  content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(47,111,237,.5),transparent);
+  transform:skewX(-18deg);transition:left .7s var(--ease);
+}
+.btn-primary:hover::after{left:120%}
+.btn-primary:hover .arrow{transform:translateX(4px)}
+.btn-ghost{border:1px solid var(--line-2);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--ink);background:var(--panel)}
+
+
+footer{
+  position:relative;z-index:3;width:var(--shell);margin:0 auto;padding:0 0 40px;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-faint);
 }
 
-/* ---------- STATUS ---------- */
-.status{
-  margin-top:clamp(30px,6vh,52px);
-  display:inline-flex; align-items:center; gap:10px;
-  padding:11px 20px; border-radius:999px;
-  border:1px solid var(--line); background:rgba(13,18,32,.72);
-  backdrop-filter:blur(10px);
-  font-family:'IBM Plex Mono',ui-monospace,monospace;
-  font-size:.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--ink-dim);
-  max-width:88vw;
-}
-.dot{
-  width:7px; height:7px; border-radius:50%; background:var(--sig); flex-shrink:0;
-  box-shadow:0 0 0 0 var(--sig-soft); animation:blip 1.7s ease-out infinite;
-  transition:background 900ms ease;
-}
-@keyframes blip{
-  0%{ box-shadow:0 0 0 0 var(--sig-soft); opacity:1; }
-  70%{ box-shadow:0 0 0 9px transparent; opacity:.45; }
-  100%{ box-shadow:0 0 0 0 transparent; opacity:1; }
-}
-.status em{ font-style:normal; color:var(--sig-light); transition:color 900ms ease; }
-.ellipsis::after{ content:''; animation:dots 1.6s steps(4,end) infinite; }
-@keyframes dots{ 0%{content:'';} 25%{content:'.';} 50%{content:'..';} 75%{content:'...';} }
+.rise{opacity:0;transform:translateY(34px);transition:opacity .95s var(--ease),transform .95s var(--ease)}
+body.ready .rise{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.18s}.d3{transition-delay:.28s}
+.d4{transition-delay:.38s}.d5{transition-delay:.48s}
 
-.trace{
-  margin-top:16px; font-family:'IBM Plex Mono',ui-monospace,monospace;
-  font-size:.66rem; letter-spacing:.5px; color:#4d566d;
-  max-width:86vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+:focus-visible{outline:2px solid var(--ir-2);outline-offset:3px;border-radius:6px}
+@media(max-width:760px){
+    .stage{padding:100px 0 120px}
 }
-
-@media (prefers-reduced-motion: reduce){
-  *{ animation:none !important; transition-duration:.01ms !important; }
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .rise{opacity:1!important;transform:none!important}
 }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <linearGradient id="markBlueGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" style="stop-color:var(--sig-light)"/>
-      <stop offset="100%" style="stop-color:var(--accent-dark)"/>
-    </linearGradient>
-    <linearGradient id="markSilverGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" style="stop-color:#ffffff"/>
-      <stop offset="100%" style="stop-color:var(--silver)"/>
-    </linearGradient>
-    <g id="nexaMarkShape">
-      <path d="M17.2 41.2 A34 34 0 1 1 74 74" fill="none" stroke="url(#markBlueGrad)" stroke-width="7" stroke-linecap="round"/>
-      <path d="M28.8 71.2 A30 30 0 0 0 79 42.2" fill="none" stroke="url(#markSilverGrad)" stroke-width="5" stroke-linecap="round"/>
-      <path d="M24 27 L24 49 L48 74 L48 49 Z" fill="url(#markBlueGrad)"/>
-      <path d="M49 40 L57 63 L65 48 L73 63 L81 40" fill="none" stroke="url(#markSilverGrad)" stroke-width="7.5" stroke-linecap="square" stroke-linejoin="miter"/>
-    </g>
-  </defs>
-</svg>
+<canvas id="bg-canvas"></canvas>
+<div id="vignette" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
 
-<div id="stars" aria-hidden="true"></div>
-<div id="halo" aria-hidden="true"></div>
-<div id="sweep" aria-hidden="true"><i></i></div>
 
-<div class="lock">
-  <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nexaMarkShape"></use></svg>
-  <span class="n">NEXA</span><span class="w">WEB</span>
-</div>
+<main class="stage">
+  <div class="inner">
+    <div class="eyebrow rise">erro 404</div>
+    <div class="code rise d1">404</div>
+    <h1 class="rise d2" id="titulo">Não deu pra carregar essa página</h1>
+    <p class="lead rise d3" id="recado">Pode ser uma queda rápida da conexão ou do servidor. Espere alguns instantes e atualize a página. Se continuar assim, me chama no WhatsApp que eu resolvo agora.</p>
 
-<div class="core" role="img" aria-label="Erro 404">
-  <span class="d glitch">4</span>
-  <span class="mark-wrap">
-    <span class="ring" aria-hidden="true"></span>
-    <span class="ring" aria-hidden="true"></span>
-    <span class="ring" aria-hidden="true"></span>
-    <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#nexaMarkShape"></use></svg>
-  </span>
-  <span class="d glitch">4</span>
-</div>
+    <div class="ctas rise d4">
+      <a class="btn-primary" id="ctaZap" href="https://wa.me/5585997119151" target="_blank" rel="noopener">
+        Chamar no WhatsApp
+        <span class="arrow">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2.05 22l5.4-1.32c1.36.72 2.92 1.14 4.58 1.14 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.78 14.02c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.13.11-1.83-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.79-4.17-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.81 2 .88 2.15.07.15.12.32.02.52-.1.2-.15.32-.29.5-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.75 1.24 1.62 2 1.11.99 2.05 1.3 2.34 1.44.29.15.46.13.63-.07.17-.2.72-.84.92-1.13.19-.29.39-.24.65-.15.27.1 1.7.8 2 .95.29.15.48.22.55.34.07.13.07.75-.17 1.43Z"></path></svg>
+        </span>
+      </a>
+    </div>
 
-<h1 id="title">Essa página não existe por aqui</h1>
-<p class="msg" id="msg">O endereço pode ter mudado de lugar ou o link veio digitado errado.</p>
+  </div>
+</main>
 
-<div class="status">
-  <span class="dot" aria-hidden="true"></span>
-  <span id="statusText">erro 404 · <em>página não encontrada</em></span>
-</div>
-<div class="trace" id="trace"></div>
+<footer>Nexa Web · Fortaleza, CE · Sites profissionais para todo o Brasil</footer>
 
 <script>
-(function(){
-  var $ = function(i){ return document.getElementById(i); };
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function estadoOffline(){
-    document.body.classList.add('offline');
-    document.title = 'Sem conexão · Nexa Web';
-    $('title').textContent = 'Você está sem conexão';
-    $('msg').textContent = 'A internet caiu ou o sinal está fraco. Assim que voltar, esta página se recarrega sozinha.';
-    $('statusText').innerHTML = 'sem internet · <em class="ellipsis">reconectando</em>';
-    $('trace').textContent = '';
-  }
+/* ---------- diz se o problema é a internet da pessoa ou o site ---------- */
+(function estadoDaConexao(){
+  const titulo = document.getElementById('titulo');
+  const recado = document.getElementById('recado');
 
-  function estado404(){
-    document.body.classList.remove('offline');
-    var caminho = window.location.pathname + window.location.search;
-    if(caminho && caminho !== '/'){
-      $('trace').textContent = 'endereço procurado: ' + caminho;
+  function atualizar(){
+    if(navigator.onLine){
+      titulo.textContent = 'Não deu pra carregar essa página';
+      recado.textContent = 'Sua internet está funcionando, então o problema é do lado do site. Espere alguns instantes e atualize a página. Se continuar assim, me chama no WhatsApp que eu resolvo agora.';
+    }else{
+      titulo.textContent = 'Você está sem internet';
+      recado.textContent = 'O aparelho perdeu a conexão. Verifique o wi-fi ou os dados móveis e abra o site de novo. Assim que voltar, tudo carrega normalmente.';
     }
   }
-
-  if(navigator.onLine === false){ estadoOffline(); } else { estado404(); }
-
-  /* volta sozinho quando a internet retorna */
-  window.addEventListener('online', function(){ location.reload(); });
-  window.addEventListener('offline', estadoOffline);
-
-  setInterval(function(){
-    if(!document.body.classList.contains('offline')) return;
-    fetch(location.href, { method:'HEAD', cache:'no-store' })
-      .then(function(){ location.reload(); })
-      .catch(function(){});
-  }, 6000);
+  atualizar();
+  window.addEventListener('online', atualizar);
+  window.addEventListener('offline', atualizar);
 })();
+
+/* ---------- cromo líquido ---------- */
+function initScene(){
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const three = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.z = 5.25;
+
+  const NOISE = `
+    vec3 mod289(vec3 x){ return x - floor(x * (1.0/289.0)) * 289.0; }
+    vec4 mod289(vec4 x){ return x - floor(x * (1.0/289.0)) * 289.0; }
+    vec4 permute(vec4 x){ return mod289(((x*34.0)+1.0)*x); }
+    vec4 taylorInvSqrt(vec4 r){ return 1.79284291400159 - 0.85373472095314 * r; }
+    float snoise(vec3 v){
+      const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+      const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+      vec3 i  = floor(v + dot(v, C.yyy));
+      vec3 x0 = v - i + dot(i, C.xxx);
+      vec3 g = step(x0.yzx, x0.xyz);
+      vec3 l = 1.0 - g;
+      vec3 i1 = min(g.xyz, l.zxy);
+      vec3 i2 = max(g.xyz, l.zxy);
+      vec3 x1 = x0 - i1 + C.xxx;
+      vec3 x2 = x0 - i2 + C.yyy;
+      vec3 x3 = x0 - D.yyy;
+      i = mod289(i);
+      vec4 p = permute(permute(permute(
+                 i.z + vec4(0.0, i1.z, i2.z, 1.0))
+               + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+               + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+      float n_ = 0.142857142857;
+      vec3 ns = n_ * D.wyz - D.xzx;
+      vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+      vec4 x_ = floor(j * ns.z);
+      vec4 y_ = floor(j - 7.0 * x_);
+      vec4 x = x_ *ns.x + ns.yyyy;
+      vec4 y = y_ *ns.x + ns.yyyy;
+      vec4 h = 1.0 - abs(x) - abs(y);
+      vec4 b0 = vec4(x.xy, y.xy);
+      vec4 b1 = vec4(x.zw, y.zw);
+      vec4 s0 = floor(b0)*2.0 + 1.0;
+      vec4 s1 = floor(b1)*2.0 + 1.0;
+      vec4 sh = -step(h, vec4(0.0));
+      vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+      vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+      vec3 p0 = vec3(a0.xy, h.x);
+      vec3 p1 = vec3(a0.zw, h.y);
+      vec3 p2 = vec3(a1.xy, h.z);
+      vec3 p3 = vec3(a1.zw, h.w);
+      vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+      p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+      vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+      m = m * m;
+      return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+    }
+  `;
+
+  const uniforms = {
+    uTime:  { value: 0 },
+    uAmp:   { value: 0.38 },
+    uFreq:  { value: 0.82 },
+    uPulse: { value: 0 },
+    uC1: { value: new THREE.Color('#1fae5f') },
+    uC2: { value: new THREE.Color('#2f6fed') },
+    uC3: { value: new THREE.Color('#8b3ff0') },
+    uC4: { value: new THREE.Color('#f2861a') }
+  };
+
+  const vert = NOISE + `
+    uniform float uTime; uniform float uAmp; uniform float uFreq; uniform float uPulse;
+    varying vec3 vNormal; varying vec3 vView; varying float vDisp;
+    vec3 displace(vec3 p){
+      float n1 = snoise(p * uFreq + vec3(0.0, 0.0, uTime * 0.22));
+      float n2 = snoise(p * uFreq * 2.3 + vec3(uTime * 0.16, 0.0, 0.0));
+      float n3 = snoise(p * uFreq * 3.8 - vec3(0.0, uTime * 0.1, 0.0));
+      float d = n1 * uAmp + n2 * uAmp * 0.30 + n3 * uAmp * 0.07;
+      d += uPulse * n2 * 0.5;
+      return p * (1.0 + d);
+    }
+    void main(){
+      vec3 p = position;
+      vec3 dp = displace(p);
+      vec3 ref = abs(normal.y) < 0.95 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0);
+      vec3 t1 = normalize(cross(normal, ref));
+      vec3 t2 = normalize(cross(normal, t1));
+      float eps = 0.045;
+      vec3 a = displace(p + t1 * eps);
+      vec3 b = displace(p + t2 * eps);
+      vec3 nn = normalize(cross(a - dp, b - dp));
+      if(dot(nn, normal) < 0.0) nn = -nn;
+      vDisp = length(dp) - 1.0;
+      vNormal = normalize(normalMatrix * nn);
+      vec4 mv = modelViewMatrix * vec4(dp, 1.0);
+      vView = -mv.xyz;
+      gl_Position = projectionMatrix * mv;
+    }
+  `;
+
+  const frag = `
+    uniform float uTime; uniform vec3 uC1; uniform vec3 uC2; uniform vec3 uC3; uniform vec3 uC4;
+    varying vec3 vNormal; varying vec3 vView; varying float vDisp;
+    vec3 pal(float t){
+      float s = fract(t) * 4.0;
+      float f = smoothstep(0.0, 1.0, fract(s));
+      vec3 a, b;
+      if(s < 1.0){ a = uC1; b = uC2; }
+      else if(s < 2.0){ a = uC2; b = uC3; }
+      else if(s < 3.0){ a = uC3; b = uC4; }
+      else { a = uC4; b = uC1; }
+      return mix(mix(a, b, f), vec3(1.0), 0.18);
+    }
+    void main(){
+      vec3 n = normalize(vNormal);
+      vec3 v = normalize(vView);
+      float fres = pow(1.0 - clamp(dot(n, v), 0.0, 1.0), 2.1);
+      vec3 r = reflect(-v, n);
+      float band = 0.5 + 0.5 * sin(r.y * 7.0 + vDisp * 5.0 + uTime * 0.35);
+      float band2 = 0.5 + 0.5 * sin(r.x * 4.2 - uTime * 0.22);
+      float chrome = pow(band, 3.0) * 0.8 + pow(band2, 5.0) * 0.5;
+      vec3 irid = pal(fres * 0.9 + vDisp * 1.8 + band * 0.35 + uTime * 0.02);
+      vec3 L = normalize(vec3(0.55, 0.85, 0.6));
+      float spec = pow(max(dot(r, L), 0.0), 48.0);
+      float spec2 = pow(max(dot(r, normalize(vec3(-0.6, 0.3, 0.8))), 0.0), 14.0);
+      vec3 col = vec3(0.01, 0.012, 0.02);
+      col = mix(col, irid, clamp(chrome * 0.85 + fres * 0.75, 0.0, 1.0));
+      col += vec3(1.0) * spec * 2.4;
+      col += irid * spec2 * 0.9;
+      float alpha = clamp(0.32 + chrome * 0.75 + fres * 0.85 + spec * 2.0, 0.0, 1.0);
+      gl_FragColor = vec4(col, alpha);
+    }
+  `;
+
+  const blob = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1, REDUCED ? 24 : 52),
+    new THREE.ShaderMaterial({ uniforms, vertexShader:vert, fragmentShader:frag,
+      transparent:true, depthWrite:false })
+  );
+  three.add(blob);
+
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 6.4), new THREE.ShaderMaterial({
+    uniforms:{ uC2: uniforms.uC2, uC3: uniforms.uC3, uTime: uniforms.uTime },
+    transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+    vertexShader:`varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader:`
+      uniform vec3 uC2; uniform vec3 uC3; uniform float uTime; varying vec2 vUv;
+      void main(){
+        float d = distance(vUv, vec2(0.5));
+        float g = smoothstep(0.5, 0.02, d);
+        vec3 c = mix(uC2, uC3, 0.5 + 0.5 * sin(uTime * 0.4 + vUv.x * 3.0));
+        gl_FragColor = vec4(c, g * g * 0.42);
+      }`
+  }));
+  glow.position.z = -1.4;
+  three.add(glow);
+
+  const st = { px:0, py:0, tx:0, ty:0, spin:0, arrastando:false, lastX:0 };
+
+  function layout(){
+    const w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+    const mobile = w < 860;
+    blob.userData.homeX = mobile ? 0.28 : 1.62;
+    blob.userData.homeY = mobile ? 0.95 : 0.12;
+    blob.userData.homeS = mobile ? 0.78 : 1.18;
+    canvas.style.opacity = mobile ? '0.7' : '1';
+  }
+  layout();
+  window.addEventListener('resize', layout);
+
+  window.addEventListener('pointermove', (e)=>{
+    st.tx = (e.clientX / window.innerWidth - 0.5) * 2;
+    st.ty = (e.clientY / window.innerHeight - 0.5) * 2;
+    if(st.arrastando){ st.spin += (e.clientX - st.lastX) * 0.0016; st.lastX = e.clientX; }
+  }, { passive:true });
+  window.addEventListener('pointerdown', (e)=>{ st.arrastando = true; st.lastX = e.clientX; uniforms.uPulse.value = 0.34; }, { passive:true });
+  window.addEventListener('pointerup', ()=>{ st.arrastando = false; }, { passive:true });
+
+  const clock = new THREE.Clock();
+  (function tick(){
+    requestAnimationFrame(tick);
+    const t = clock.getElapsedTime();
+    uniforms.uTime.value = t;
+    uniforms.uPulse.value += (0 - uniforms.uPulse.value) * 0.045;
+    st.px += (st.tx - st.px) * 0.05;
+    st.py += (st.ty - st.py) * 0.05;
+    st.spin *= 0.94;
+    blob.position.x = blob.userData.homeX + st.px * 0.35;
+    blob.position.y = blob.userData.homeY - st.py * 0.28;
+    blob.scale.setScalar(blob.userData.homeS);
+    blob.rotation.y += 0.0022 + st.spin;
+    blob.rotation.x = st.py * 0.22 + Math.sin(t * 0.18) * 0.12;
+    blob.rotation.z = Math.sin(t * 0.12) * 0.1;
+    glow.position.x = blob.position.x;
+    glow.position.y = blob.position.y;
+    glow.scale.setScalar(blob.userData.homeS * 0.95);
+    renderer.render(three, camera);
+  })();
+}
+
+if(typeof THREE !== 'undefined'){
+  try{ initScene(); }catch(err){ console.warn('WebGL indisponível:', err); }
+}
+if(!document.getElementById('bg-canvas').getContext){
+  document.getElementById('bg-canvas').style.background =
+    'radial-gradient(60% 55% at 74% 34%, rgba(47,111,237,.34), transparent 60%), radial-gradient(45% 40% at 60% 46%, rgba(139,63,240,.26), transparent 60%)';
+}
+
+function pronto(){ document.body.classList.add('ready'); }
+window.addEventListener('load', pronto);
+setTimeout(pronto, 900);
 </script>
 </body>
 </html>
