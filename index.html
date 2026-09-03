@@ -193,7 +193,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 .step-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-light)}
 .step-count{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
 .track{height:2px;background:var(--line);margin-bottom:30px}
-.track i{display:block;height:100%;width:12.5%;background:linear-gradient(90deg,var(--ir-1),var(--ir-2),var(--ir-3),var(--ir-4));transition:width .6s var(--ease)}
+.track i{display:block;height:100%;width:11.1%;background:linear-gradient(90deg,var(--ir-1),var(--ir-2),var(--ir-3),var(--ir-4));transition:width .6s var(--ease)}
 
 .step{display:none}
 .step.active{display:block;animation:stepIn .55s var(--ease) both}
@@ -264,6 +264,12 @@ button,input,textarea,select{font:inherit;color:inherit}
 .chip span{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;opacity:.75;margin-left:8px}
 
 /* ---------- campos ---------- */
+.sec-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--accent-light);margin:0 0 16px;display:flex;align-items:center;gap:11px;
+}
+.sec-tag::after{content:'';flex:1;height:1px;background:var(--line)}
+.step .sec-tag~.sec-tag{margin-top:32px}
 .field{margin-bottom:22px}
 .field:last-child{margin-bottom:0}
 label{
@@ -343,6 +349,8 @@ textarea{min-height:112px;resize:vertical;line-height:1.6}
   transition:transform .5s var(--ease);
 }
 .btn-primary .arrow svg{width:14px;height:14px}
+.arrow.spin svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .btn-primary::after{
   content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
   background:linear-gradient(100deg,transparent,rgba(122,92,255,.55),transparent);
@@ -561,15 +569,59 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
         <label>Você já tem logo?</label>
         <div class="chips" id="logoChips"></div>
       </div>
-      <div class="field">
-        <label for="f_redes">Redes sociais</label>
-        <input type="text" id="f_redes" placeholder="@seuinstagram, link do Facebook...">
-      </div>
       <p class="err-msg" id="err4" role="alert">Preencha o nome do negócio.</p>
     </div>
 
     <!-- 5 -->
     <div class="step" data-step="5">
+      <h2>Dados que vão no site</h2>
+      <p class="hint">São as informações que qualquer visitante vai ver na página. Preencha só o que quiser publicar — o que ficar em branco simplesmente não aparece.</p>
+
+      <div class="sec-tag">Contato público</div>
+      <div class="two-col">
+        <div class="field">
+          <label for="f_site_tel">Telefone que deve aparecer</label>
+          <input type="tel" id="f_site_tel" placeholder="(85) 90000-0000" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="f_site_email">E-mail de contato</label>
+          <input type="email" id="f_site_email" placeholder="contato@seunegocio.com">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f_site_end">Endereço</label>
+        <input type="text" id="f_site_end" placeholder="Rua, número, bairro, cidade">
+      </div>
+      <div class="field">
+        <label for="f_site_horario">Horário de atendimento</label>
+        <input type="text" id="f_site_horario" placeholder="Seg a sex, 8h às 18h · Sáb, 8h às 12h">
+      </div>
+
+      <div class="sec-tag">Redes sociais</div>
+      <div class="two-col">
+        <div class="field">
+          <label for="f_insta">Instagram</label>
+          <input type="text" id="f_insta" placeholder="@seuperfil">
+        </div>
+        <div class="field">
+          <label for="f_face">Facebook</label>
+          <input type="text" id="f_face" placeholder="facebook.com/seunegocio">
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label for="f_youtube">YouTube</label>
+          <input type="text" id="f_youtube" placeholder="@seucanal ou link">
+        </div>
+        <div class="field">
+          <label for="f_tiktok">TikTok</label>
+          <input type="text" id="f_tiktok" placeholder="@seuperfil">
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="step" data-step="6">
       <h2>O que o site precisa ter?</h2>
       <p class="hint">Marque tudo que fizer sentido. Não precisa se limitar ao plano — eu te oriento depois se algo pedir outro pacote.</p>
       <div class="chips" id="funcChips"></div>
@@ -579,8 +631,8 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       </div>
     </div>
 
-    <!-- 6 -->
-    <div class="step" data-step="6">
+    <!-- 7 -->
+    <div class="step" data-step="7">
       <h2>Estilo visual</h2>
       <p class="hint">Como você quer que o site pareça na primeira olhada.</p>
       <div class="field">
@@ -597,8 +649,8 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       </div>
     </div>
 
-    <!-- 7 -->
-    <div class="step" data-step="7">
+    <!-- 8 -->
+    <div class="step" data-step="8">
       <h2>Fotos e referências</h2>
       <p class="hint">Envie logo, fotos dos produtos ou prints de sites que te agradam. Até 5 imagens.</p>
       <label class="drop" id="drop" for="fileInput">
@@ -617,10 +669,10 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       </div>
     </div>
 
-    <!-- 8 -->
-    <div class="step" data-step="8">
+    <!-- 9 -->
+    <div class="step" data-step="9">
       <h2>Seus dados</h2>
-      <p class="hint">Último passo. Me diz como falar com você e qual o melhor momento.</p>
+      <p class="hint">Último passo, e agora é sobre você, não sobre o site. Como eu falo contigo e qual o melhor momento.</p>
       <div class="two-col">
         <div class="field">
           <label for="f_nome">Seu nome <i>*</i></label>
@@ -707,8 +759,9 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
 </footer>
 
 </div>
+<script src="nexa-config.js"></script>
 <script>
-const WHATSAPP = '5585997119151';
+const WHATSAPP = (window.NEXA_CONFIG && window.NEXA_CONFIG.whatsapp) || '5585997119151';
 
 /* ================= DADOS ================= */
 const CORES = {
@@ -771,8 +824,8 @@ const PRAZOS = ['O quanto antes','Em até 15 dias','Em até 30 dias','Sem pressa
 /* ================= ESTADO ================= */
 const S = { tipo:null, plano:null, adicionais:[], logo:null, funcoes:[], estilo:null, prazo:null, fotos:[] };
 let step = 1;
-const TOTAL_STEPS = 8;
-const LABELS = ['Tipo de projeto','Plano','Adicionais','Seu negócio','Funcionalidades','Estilo visual','Fotos','Contato'];
+const TOTAL_STEPS = 9;
+const LABELS = ['Tipo de projeto','Plano','Adicionais','Seu negócio','Dados do site','Funcionalidades','Estilo visual','Fotos','Contato'];
 
 const brl = v => 'R$ ' + v.toFixed(2).replace('.', ',');
 const $ = id => document.getElementById(id);
@@ -937,13 +990,15 @@ $('sumToggle').addEventListener('click', () => {
   $('sumToggle').setAttribute('aria-expanded', open);
 });
 
-$('f_whats').addEventListener('input', e => {
+function mascara(e){
   let d = e.target.value.replace(/\D/g,'').slice(0,11);
   if(d.length > 6) e.target.value = `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
   else if(d.length > 2) e.target.value = `(${d.slice(0,2)}) ${d.slice(2)}`;
   else if(d.length) e.target.value = `(${d}`;
   else e.target.value = '';
-});
+}
+$('f_whats').addEventListener('input', mascara);
+$('f_site_tel').addEventListener('input', mascara);
 
 /* ================= NAVEGAÇÃO ================= */
 const SETA = '<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>';
@@ -991,7 +1046,7 @@ function validate(n){
     if(!ok) focarErro($('f_negocio'));
     return ok;
   }
-  if(n === 8){
+  if(n === 9){
     const nomeOk = !!val('f_nome'), zapOk = val('f_whats').replace(/\D/g,'').length >= 10;
     $('f_nome').classList.toggle('err', !nomeOk);
     $('f_whats').classList.toggle('err', !zapOk);
@@ -1014,8 +1069,18 @@ $('btnNext').addEventListener('click', () => {
   $(id).addEventListener('input', () => { $(id).classList.remove('err'); $(id).setAttribute('aria-invalid','false'); }));
 
 /* ================= ENVIO ================= */
-function enviar(){
+async function enviar(){
+  travarBotao(true);
+  let ref = null;
+  try{
+    ref = await salvarNoPainel();
+  }catch(err){
+    console.warn('Painel indisponível, seguindo pelo WhatsApp:', err);
+  }
+  travarBotao(false);
+
   const L = [];
+  if(ref) L.push('Protocolo ' + ref.codigo);
   L.push('*NOVO AGENDAMENTO — NEXA WEB*');
   L.push('');
   L.push('*PROJETO*');
@@ -1038,6 +1103,21 @@ function enviar(){
   if(S.logo) L.push('Logo: ' + S.logo);
   if(val('f_redes')) L.push('Redes: ' + val('f_redes'));
   L.push('');
+
+  const site = [];
+  if(val('f_site_tel')) site.push('Telefone: ' + val('f_site_tel'));
+  if(val('f_site_email')) site.push('E-mail: ' + val('f_site_email'));
+  if(val('f_site_end')) site.push('Endereço: ' + val('f_site_end'));
+  if(val('f_site_horario')) site.push('Horário: ' + val('f_site_horario'));
+  if(val('f_insta')) site.push('Instagram: ' + val('f_insta'));
+  if(val('f_face')) site.push('Facebook: ' + val('f_face'));
+  if(val('f_youtube')) site.push('YouTube: ' + val('f_youtube'));
+  if(val('f_tiktok')) site.push('TikTok: ' + val('f_tiktok'));
+  if(site.length){
+    L.push('*DADOS QUE VÃO NO SITE*');
+    site.forEach(x => L.push(x));
+    L.push('');
+  }
 
   L.push('*O QUE O SITE PRECISA TER*');
   L.push(S.funcoes.length ? S.funcoes.map(f => '• ' + f).join('\n') : '• A definir na conversa');
@@ -1062,7 +1142,8 @@ function enviar(){
   if(val('f_obs')){ L.push(''); L.push('*OBSERVAÇÕES*'); L.push(val('f_obs')); }
   if(S.fotos.length){
     L.push('');
-    L.push('📎 Tenho ' + S.fotos.length + (S.fotos.length > 1 ? ' imagens' : ' imagem') + ' de referência para enviar aqui na conversa.');
+    if(ref) L.push('🖼️ ' + S.fotos.length + (S.fotos.length > 1 ? ' imagens de referência já estão' : ' imagem de referência já está') + ' no painel.');
+    else L.push('📎 Tenho ' + S.fotos.length + (S.fotos.length > 1 ? ' imagens' : ' imagem') + ' de referência para enviar aqui na conversa.');
   }
 
   const msg = encodeURIComponent(L.join('\n'));
@@ -1088,7 +1169,12 @@ function enviar(){
     abrir(web, '_blank');
   }
 
-  if(S.fotos.length){
+  if(ref){
+    $('doneTitle').textContent = 'Briefing recebido';
+    $('doneText').textContent = 'Guardei tudo' + (S.fotos.length ? ', imagens inclusive' : '') +
+      ' com o protocolo ' + ref.codigo + '. A conversa no WhatsApp também já abriu, é só apertar enviar.';
+    $('dlGrid').innerHTML = '';
+  } else if(S.fotos.length){
     $('doneTitle').textContent = 'Falta anexar as fotos';
     $('doneText').textContent = 'Sua conversa comigo abriu com o briefing preenchido. Toque em cada imagem abaixo para salvar e depois anexe na conversa.';
     $('dlGrid').innerHTML = S.fotos.map((f,i) =>
@@ -1122,6 +1208,96 @@ $('btnAgain').addEventListener('click', () => {
   $('stepDone').classList.remove('active');
   showStep(TOTAL_STEPS);
 });
+
+/* ================= PAINEL (Firebase) ================= */
+function travarBotao(on){
+  const b = $('btnNext');
+  b.disabled = on;
+  b.style.opacity = on ? '.6' : '';
+  b.style.pointerEvents = on ? 'none' : '';
+  if(on) b.innerHTML = 'Enviando<span class="arrow spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg></span>';
+}
+
+function codigoProtocolo(){
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let out = '';
+  for(let i=0;i<4;i++) out += c[Math.floor(Math.random()*c.length)];
+  return 'NX-' + out;
+}
+
+function dadosDoBriefing(codigo){
+  return {
+    codigo: codigo,
+    status: 'novo',
+    criadoEm: new Date().toISOString(),
+    projeto: {
+      tipo: TYPES.find(t => t.id === S.tipo).nome,
+      tipoId: S.tipo,
+      plano: S.plano.nome,
+      planoId: S.plano.id,
+      valor: S.plano.valor,
+      ciclo: S.plano.ciclo,
+      adicionais: S.adicionais.map(n => {
+        const a = ADICIONAIS.find(x => x.nome === n);
+        return { nome:n, valor:a ? a.valor : 0 };
+      }),
+      total: $('totalMain').textContent
+    },
+    negocio: {
+      nome: val('f_negocio'), ramo: val('f_ramo'),
+      cidade: val('f_cidade'), logo: S.logo || ''
+    },
+    site: {
+      telefone: val('f_site_tel'), email: val('f_site_email'),
+      endereco: val('f_site_end'), horario: val('f_site_horario'),
+      instagram: val('f_insta'), facebook: val('f_face'),
+      youtube: val('f_youtube'), tiktok: val('f_tiktok')
+    },
+    escopo: {
+      funcoes: S.funcoes, paginas: val('f_paginas'),
+      estilo: S.estilo || '', cores: val('f_cores'), referencia: val('f_ref'),
+      observacoes: val('f_obs')
+    },
+    cliente: {
+      nome: val('f_nome'), whatsapp: val('f_whats'), email: val('f_email'),
+      dia: val('f_data'), hora: val('f_hora'), prazo: S.prazo || ''
+    },
+    imagens: []
+  };
+}
+
+async function salvarNoPainel(){
+  const cfg = window.NEXA_CONFIG;
+  if(!cfg || !cfg.firebase || !cfg.firebase.apiKey || cfg.firebase.apiKey.indexOf('COLE_') === 0){
+    throw new Error('Firebase ainda não configurado');
+  }
+
+  const [{ initializeApp }, fs, st] = await Promise.all([
+    import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'),
+    import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js'),
+    import('https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js')
+  ]);
+
+  const app = initializeApp(cfg.firebase);
+  const db = fs.getFirestore(app);
+  const storage = st.getStorage(app);
+
+  const codigo = codigoProtocolo();
+  const dados = dadosDoBriefing(codigo);
+
+  for(let i = 0; i < S.fotos.length; i++){
+    const f = S.fotos[i];
+    const ext = (f.nome.split('.').pop() || 'jpg').toLowerCase().slice(0,4);
+    const caminho = `briefings/${codigo}/${i + 1}.${ext}`;
+    const r = st.ref(storage, caminho);
+    await st.uploadString(r, f.url, 'data_url');
+    dados.imagens.push({ nome:f.nome, url: await st.getDownloadURL(r), caminho });
+  }
+
+  dados.criadoEmServidor = fs.serverTimestamp();
+  const doc = await fs.addDoc(fs.collection(db, 'briefings'), dados);
+  return { codigo, id: doc.id };
+}
 
 /* service worker: tela de erro quando faltar internet */
 if('serviceWorker' in navigator){
