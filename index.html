@@ -349,6 +349,8 @@ textarea{min-height:112px;resize:vertical;line-height:1.6}
   transition:transform .5s var(--ease);
 }
 .btn-primary .arrow svg{width:14px;height:14px}
+.zap-label{white-space:nowrap}
+.zap-label b{font-weight:400;text-transform:none;letter-spacing:.02em}
 .arrow.spin svg{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn-primary::after{
@@ -1004,6 +1006,8 @@ $('f_site_tel').addEventListener('input', mascara);
 const SETA = '<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>';
 const ZAP = '<span class="arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 12.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5 4.5 1.2.5 2.1.8 2.8.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></span>';
 
+const LABEL_FINAL = '<span class="zap-label">Enviar no <b>WhatsApp</b></span>' + ZAP;
+
 function showStep(n, inicial){
   step = n;
   document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', s.dataset.step === String(n)));
@@ -1011,7 +1015,7 @@ function showStep(n, inicial){
   $('stepCount').textContent = 'Etapa ' + n + ' / ' + TOTAL_STEPS;
   $('barFill').style.width = (n / TOTAL_STEPS * 100) + '%';
   $('btnBack').style.display = n === 1 ? 'none' : 'inline-flex';
-  $('btnNext').innerHTML = n === TOTAL_STEPS ? 'Enviar no WhatsApp' + ZAP : 'Próximo' + SETA;
+  $('btnNext').innerHTML = n === TOTAL_STEPS ? LABEL_FINAL : 'Próximo' + SETA;
   $('btnNext').classList.toggle('btn-send', n === TOTAL_STEPS);
 
   if(inicial) return;
@@ -1070,14 +1074,17 @@ $('btnNext').addEventListener('click', () => {
 
 /* ================= ENVIO ================= */
 async function enviar(){
-  travarBotao(true);
-  let ref = null;
+  let ref = null, falhaPainel = null;
+  travarBotao(true, 'Enviando');
   try{
-    ref = await salvarNoPainel();
+    ref = await comLimite(salvarNoPainel(t => travarBotao(true, t)), 30000,
+                          'O painel demorou demais para responder');
   }catch(err){
+    if(!err.naoConfigurado) falhaPainel = err.message || 'erro desconhecido';
     console.warn('Painel indisponível, seguindo pelo WhatsApp:', err);
+  }finally{
+    travarBotao(false);
   }
-  travarBotao(false);
 
   const L = [];
   if(ref) L.push('Protocolo ' + ref.codigo);
@@ -1169,7 +1176,12 @@ async function enviar(){
     abrir(web, '_blank');
   }
 
-  if(ref){
+  if(falhaPainel && S.fotos.length){
+    $('doneTitle').textContent = 'Falta anexar as fotos';
+    $('doneText').textContent = 'A conversa no WhatsApp abriu com o briefing preenchido. Toque em cada imagem abaixo para salvar e depois anexe na conversa.';
+    $('dlGrid').innerHTML = S.fotos.map((f,i) =>
+      `<a class="dl-item" href="${f.url}" download="nexa-referencia-${i+1}.png"><img src="${f.url}" alt="Referência ${i+1}"><span>baixar</span></a>`).join('');
+  } else if(ref){
     $('doneTitle').textContent = 'Briefing recebido';
     $('doneText').textContent = 'Guardei tudo' + (S.fotos.length ? ', imagens inclusive' : '') +
       ' com o protocolo ' + ref.codigo + '. A conversa no WhatsApp também já abriu, é só apertar enviar.';
@@ -1210,12 +1222,23 @@ $('btnAgain').addEventListener('click', () => {
 });
 
 /* ================= PAINEL (Firebase) ================= */
-function travarBotao(on){
+const SPIN = '<span class="arrow spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg></span>';
+
+function travarBotao(on, texto){
   const b = $('btnNext');
   b.disabled = on;
   b.style.opacity = on ? '.6' : '';
   b.style.pointerEvents = on ? 'none' : '';
-  if(on) b.innerHTML = 'Enviando<span class="arrow spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg></span>';
+  /* sempre devolve o rótulo ao destravar: sem isso o spinner nunca some */
+  b.innerHTML = on ? '<span class="zap-label">' + (texto || 'Enviando') + '</span>' + SPIN : LABEL_FINAL;
+}
+
+/* nenhuma espera pode ser infinita */
+function comLimite(promessa, ms, aviso){
+  return Promise.race([
+    promessa,
+    new Promise((_, rejeitar) => setTimeout(() => rejeitar(new Error(aviso || 'Tempo esgotado')), ms))
+  ]);
 }
 
 function codigoProtocolo(){
@@ -1266,17 +1289,20 @@ function dadosDoBriefing(codigo){
   };
 }
 
-async function salvarNoPainel(){
+async function salvarNoPainel(aoProgredir){
   const cfg = window.NEXA_CONFIG;
   if(!cfg || !cfg.firebase || !cfg.firebase.apiKey || cfg.firebase.apiKey.indexOf('COLE_') === 0){
-    throw new Error('Firebase ainda não configurado');
+    const e = new Error('Firebase ainda não configurado');
+    e.naoConfigurado = true;
+    throw e;
   }
+  const aviso = aoProgredir || function(){};
 
-  const [{ initializeApp }, fs, st] = await Promise.all([
+  const [{ initializeApp }, fs, st] = await comLimite(Promise.all([
     import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'),
     import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js'),
     import('https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js')
-  ]);
+  ]), 12000, 'Não consegui carregar o Firebase');
 
   const app = initializeApp(cfg.firebase);
   const db = fs.getFirestore(app);
@@ -1287,15 +1313,17 @@ async function salvarNoPainel(){
 
   for(let i = 0; i < S.fotos.length; i++){
     const f = S.fotos[i];
-    const ext = (f.nome.split('.').pop() || 'jpg').toLowerCase().slice(0,4);
+    aviso('Imagem ' + (i + 1) + ' de ' + S.fotos.length);
+    const ext = (f.nome.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,4) || 'jpg';
     const caminho = `briefings/${codigo}/${i + 1}.${ext}`;
     const r = st.ref(storage, caminho);
-    await st.uploadString(r, f.url, 'data_url');
-    dados.imagens.push({ nome:f.nome, url: await st.getDownloadURL(r), caminho });
+    await comLimite(st.uploadString(r, f.url, 'data_url'), 20000, 'O envio da imagem ' + (i + 1) + ' demorou demais');
+    dados.imagens.push({ nome:f.nome, url: await comLimite(st.getDownloadURL(r), 10000, 'Não consegui o link da imagem'), caminho });
   }
 
+  aviso('Salvando');
   dados.criadoEmServidor = fs.serverTimestamp();
-  const doc = await fs.addDoc(fs.collection(db, 'briefings'), dados);
+  const doc = await comLimite(fs.addDoc(fs.collection(db, 'briefings'), dados), 15000, 'O banco de dados não respondeu');
   return { codigo, id: doc.id };
 }
 
