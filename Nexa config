@@ -22,12 +22,13 @@ window.NEXA_CONFIG = {
      e o formulário continua funcionando só pelo WhatsApp.
      --------------------------------------------------------- */
   firebase: {
-    apiKey:            'COLE_AQUI',
-    authDomain:        'COLE_AQUI',
-    projectId:         'COLE_AQUI',
-    storageBucket:     'COLE_AQUI',
-    messagingSenderId: 'COLE_AQUI',
-    appId:             'COLE_AQUI'
+   apiKey: "AIzaSyAeTuh7HQ0GZ_nF11dJrpca9fuKH2jLOpE",
+  authDomain: "nexa-web-2c045.firebaseapp.com",
+  projectId: "nexa-web-2c045",
+  storageBucket: "nexa-web-2c045.firebasestorage.app",
+  messagingSenderId: "5004622324",
+  appId: "1:5004622324:web:018c99681c11caf4f261a1",
+  measurementId: "G-KM5YTWP0PS"
   },
 
   /* E-mail que pode entrar no painel. Precisa ser o mesmo
