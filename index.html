@@ -1221,7 +1221,7 @@ $('btnAgain').addEventListener('click', () => {
   showStep(TOTAL_STEPS);
 });
 
-/* ================= PAINEL (Firebase) ================= */
+/* ================= PAINEL (Supabase) ================= */
 const SPIN = '<span class="arrow spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg></span>';
 
 function travarBotao(on, texto){
@@ -1248,11 +1248,21 @@ function codigoProtocolo(){
   return 'NX-' + out;
 }
 
+/* o navegador guarda a foto como texto base64; o Supabase quer um arquivo */
+function dataUrlParaBlob(dataUrl){
+  const partes = dataUrl.split(',');
+  const tipo = (partes[0].match(/:(.*?);/) || [null,'image/jpeg'])[1];
+  const bin = atob(partes[1]);
+  const bytes = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Blob([bytes], { type: tipo });
+}
+
 function dadosDoBriefing(codigo){
   return {
     codigo: codigo,
     status: 'novo',
-    criadoEm: new Date().toISOString(),
+    criado_em: new Date().toISOString(),
     projeto: {
       tipo: TYPES.find(t => t.id === S.tipo).nome,
       tipoId: S.tipo,
@@ -1291,22 +1301,21 @@ function dadosDoBriefing(codigo){
 
 async function salvarNoPainel(aoProgredir){
   const cfg = window.NEXA_CONFIG;
-  if(!cfg || !cfg.firebase || !cfg.firebase.apiKey || cfg.firebase.apiKey.indexOf('COLE_') === 0){
-    const e = new Error('Firebase ainda não configurado');
+  const sb = cfg && cfg.supabase;
+  if(!sb || !sb.url || !sb.anonKey || sb.url.indexOf('COLE_') === 0 || sb.anonKey.indexOf('COLE_') === 0){
+    const e = new Error('Supabase ainda não configurado');
     e.naoConfigurado = true;
     throw e;
   }
   const aviso = aoProgredir || function(){};
 
-  const [{ initializeApp }, fs, st] = await comLimite(Promise.all([
-    import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'),
-    import('https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js'),
-    import('https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js')
-  ]), 12000, 'Não consegui carregar o Firebase');
+  const { createClient } = await comLimite(
+    import('https://esm.sh/@supabase/supabase-js@2.45.4'),
+    12000, 'Não consegui carregar o Supabase');
 
-  const app = initializeApp(cfg.firebase);
-  const db = fs.getFirestore(app);
-  const storage = st.getStorage(app);
+  const cliente = createClient(sb.url, sb.anonKey);
+  const balde = sb.bucket || 'briefings';
+  const tabela = sb.tabela || 'briefings';
 
   const codigo = codigoProtocolo();
   const dados = dadosDoBriefing(codigo);
@@ -1315,16 +1324,24 @@ async function salvarNoPainel(aoProgredir){
     const f = S.fotos[i];
     aviso('Imagem ' + (i + 1) + ' de ' + S.fotos.length);
     const ext = (f.nome.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,4) || 'jpg';
-    const caminho = `briefings/${codigo}/${i + 1}.${ext}`;
-    const r = st.ref(storage, caminho);
-    await comLimite(st.uploadString(r, f.url, 'data_url'), 20000, 'O envio da imagem ' + (i + 1) + ' demorou demais');
-    dados.imagens.push({ nome:f.nome, url: await comLimite(st.getDownloadURL(r), 10000, 'Não consegui o link da imagem'), caminho });
+    const caminho = codigo + '/' + (i + 1) + '.' + ext;
+    const blob = dataUrlParaBlob(f.url);
+
+    const up = await comLimite(
+      cliente.storage.from(balde).upload(caminho, blob, { contentType: blob.type, upsert: true }),
+      20000, 'O envio da imagem ' + (i + 1) + ' demorou demais');
+    if(up.error) throw new Error('Imagem ' + (i + 1) + ': ' + up.error.message);
+
+    dados.imagens.push({ nome: f.nome, caminho: caminho, tamanho: blob.size });
   }
 
   aviso('Salvando');
-  dados.criadoEmServidor = fs.serverTimestamp();
-  const doc = await comLimite(fs.addDoc(fs.collection(db, 'briefings'), dados), 15000, 'O banco de dados não respondeu');
-  return { codigo, id: doc.id };
+  const res = await comLimite(
+    cliente.from(tabela).insert(dados).select('id').single(),
+    15000, 'O banco de dados não respondeu');
+  if(res.error) throw new Error(res.error.message);
+
+  return { codigo: codigo, id: res.data.id };
 }
 
 /* service worker: tela de erro quando faltar internet */
