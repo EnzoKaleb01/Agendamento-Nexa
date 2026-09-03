@@ -1,0 +1,36 @@
+/* =========================================================
+   NEXA WEB — Configuração
+   Único arquivo que você precisa editar.
+   ========================================================= */
+
+window.NEXA_CONFIG = {
+
+  /* Seu WhatsApp, com código do país e DDD, só números */
+  whatsapp: '5585997119151',
+
+  /* Link do site principal */
+  site: 'https://enzokaleb01.github.io/Site-Nexa-Web/',
+
+  /* ---------------------------------------------------------
+     FIREBASE — cole aqui os dados do seu projeto.
+
+     Onde achar: console.firebase.google.com → seu projeto →
+     ícone de engrenagem → Configurações do projeto →
+     role até "Seus aplicativos" → app da Web → Configuração.
+
+     Enquanto estiver com "COLE_AQUI", o painel fica desligado
+     e o formulário continua funcionando só pelo WhatsApp.
+     --------------------------------------------------------- */
+  firebase: {
+    apiKey:            'COLE_AQUI',
+    authDomain:        'COLE_AQUI',
+    projectId:         'COLE_AQUI',
+    storageBucket:     'COLE_AQUI',
+    messagingSenderId: 'COLE_AQUI',
+    appId:             'COLE_AQUI'
+  },
+
+  /* E-mail que pode entrar no painel. Precisa ser o mesmo
+     cadastrado em Authentication → Users no Firebase. */
+  adminEmail: 'seu@email.com'
+};
