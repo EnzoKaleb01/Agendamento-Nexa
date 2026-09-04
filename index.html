@@ -1328,7 +1328,7 @@ async function salvarNoPainel(aoProgredir){
     const blob = dataUrlParaBlob(f.url);
 
     const up = await comLimite(
-      cliente.storage.from(balde).upload(caminho, blob, { contentType: blob.type, upsert: true }),
+      cliente.storage.from(balde).upload(caminho, blob, { contentType: blob.type, upsert: false }),
       20000, 'O envio da imagem ' + (i + 1) + ' demorou demais');
     if(up.error) throw new Error('Imagem ' + (i + 1) + ': ' + up.error.message);
 
@@ -1336,12 +1336,14 @@ async function salvarNoPainel(aoProgredir){
   }
 
   aviso('Salvando');
+  /* só insere. Pedir a linha de volta com .select() exigiria permissão de
+     leitura, que o visitante não tem — e o envio pareceria ter falhado. */
   const res = await comLimite(
-    cliente.from(tabela).insert(dados).select('id').single(),
+    cliente.from(tabela).insert(dados),
     15000, 'O banco de dados não respondeu');
   if(res.error) throw new Error(res.error.message);
 
-  return { codigo: codigo, id: res.data.id };
+  return { codigo: codigo };
 }
 
 /* service worker: tela de erro quando faltar internet */
