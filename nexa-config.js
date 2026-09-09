@@ -17,5 +17,5 @@ window.NEXA_CONFIG = {
      Você pega ele ao publicar o script (passo 4 do guia).
      Termina sempre com /exec
      --------------------------------------------------------- */
-  api: 'COLE_AQUI_O_ENDERECO_DO_APPS_SCRIPT'
+  api: 'https://script.google.com/macros/s/AKfycbyXF5YGqhdi0SA9pRM5SuHaW9_3IYgC4b4srf46NLVPtfk9JRT97mCzZrfPsNz8SZFk1A/exec'
 };
