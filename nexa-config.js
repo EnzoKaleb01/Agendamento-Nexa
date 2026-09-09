@@ -1,6 +1,7 @@
 /* =========================================================
    AGENDAMENTO NEXA WEB — Configuração
-   Único arquivo que você edita neste repositório.
+   Vai no repositório Agendamento-Nexa, com o nome
+   exatamente: nexa-config.js
    ========================================================= */
 
 window.NEXA_CONFIG = {
@@ -12,17 +13,9 @@ window.NEXA_CONFIG = {
   site: 'https://enzokaleb01.github.io/Site-Nexa-Web/',
 
   /* ---------------------------------------------------------
-     SUPABASE — o MESMO projeto que o painel usa.
-     É isso que faz o briefing aparecer lá.
-
-     A chave publishable é pública de propósito: quem protege
-     os dados são as políticas de RLS. Aqui ela só precisa de
-     permissão para CRIAR, nunca para ler.
+     Endereço do seu Apps Script.
+     Você pega ele ao publicar o script (passo 4 do guia).
+     Termina sempre com /exec
      --------------------------------------------------------- */
-  supabase: {
-    url:     'https://dcikmlblvpayzmnfqznq.supabase.co',
-    anonKey: 'sb_publishable_ZgLfnx_kYuEwhY-uVayUMA_ToUej3ig',
-    tabela:  'briefings',
-    bucket:  'briefings'
-  }
+  api: 'COLE_AQUI_O_ENDERECO_DO_APPS_SCRIPT'
 };
