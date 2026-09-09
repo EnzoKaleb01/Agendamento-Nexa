@@ -1221,7 +1221,7 @@ $('btnAgain').addEventListener('click', () => {
   showStep(TOTAL_STEPS);
 });
 
-/* ================= PAINEL (Supabase) ================= */
+/* ================= PAINEL (Google Apps Script) ================= */
 const SPIN = '<span class="arrow spin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg></span>';
 
 function travarBotao(on, texto){
@@ -1246,16 +1246,6 @@ function codigoProtocolo(){
   let out = '';
   for(let i=0;i<4;i++) out += c[Math.floor(Math.random()*c.length)];
   return 'NX-' + out;
-}
-
-/* o navegador guarda a foto como texto base64; o Supabase quer um arquivo */
-function dataUrlParaBlob(dataUrl){
-  const partes = dataUrl.split(',');
-  const tipo = (partes[0].match(/:(.*?);/) || [null,'image/jpeg'])[1];
-  const bin = atob(partes[1]);
-  const bytes = new Uint8Array(bin.length);
-  for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return new Blob([bytes], { type: tipo });
 }
 
 function dadosDoBriefing(codigo){
@@ -1299,51 +1289,66 @@ function dadosDoBriefing(codigo){
   };
 }
 
+/* encolhe a foto antes de enviar: o Google recusa arquivo grande
+   e o cliente muitas vezes manda imagem de 8 MB do celular */
+function encolher(dataUrl, ladoMax){
+  return new Promise(function(ok){
+    const img = new Image();
+    img.onload = function(){
+      let l = img.width, a = img.height;
+      const max = ladoMax || 1600;
+      if(l > max || a > max){
+        if(l > a){ a = Math.round(a * max / l); l = max; }
+        else     { l = Math.round(l * max / a); a = max; }
+      }
+      const c = document.createElement('canvas');
+      c.width = l; c.height = a;
+      c.getContext('2d').drawImage(img, 0, 0, l, a);
+      try{ ok(c.toDataURL('image/jpeg', 0.82)); }
+      catch(e){ ok(dataUrl); }
+    };
+    img.onerror = function(){ ok(dataUrl); };
+    img.src = dataUrl;
+  });
+}
+
 async function salvarNoPainel(aoProgredir){
   const cfg = window.NEXA_CONFIG;
-  const sb = cfg && cfg.supabase;
-  if(!sb || !sb.url || !sb.anonKey || sb.url.indexOf('COLE_') === 0 || sb.anonKey.indexOf('COLE_') === 0){
-    const e = new Error('Supabase ainda não configurado');
+  const api = cfg && cfg.api;
+  if(!api || api.indexOf('COLE_') === 0 || api.indexOf('http') !== 0){
+    const e = new Error('Painel ainda não configurado');
     e.naoConfigurado = true;
     throw e;
   }
   const aviso = aoProgredir || function(){};
 
-  const { createClient } = await comLimite(
-    import('https://esm.sh/@supabase/supabase-js@2.45.4'),
-    12000, 'Não consegui carregar o Supabase');
-
-  const cliente = createClient(sb.url, sb.anonKey);
-  const balde = sb.bucket || 'briefings';
-  const tabela = sb.tabela || 'briefings';
-
   const codigo = codigoProtocolo();
   const dados = dadosDoBriefing(codigo);
 
+  const imagens = [];
   for(let i = 0; i < S.fotos.length; i++){
-    const f = S.fotos[i];
     aviso('Imagem ' + (i + 1) + ' de ' + S.fotos.length);
-    const ext = (f.nome.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,4) || 'jpg';
-    const caminho = codigo + '/' + (i + 1) + '.' + ext;
-    const blob = dataUrlParaBlob(f.url);
-
-    const up = await comLimite(
-      cliente.storage.from(balde).upload(caminho, blob, { contentType: blob.type, upsert: false }),
-      20000, 'O envio da imagem ' + (i + 1) + ' demorou demais');
-    if(up.error) throw new Error('Imagem ' + (i + 1) + ': ' + up.error.message);
-
-    dados.imagens.push({ nome: f.nome, caminho: caminho, tamanho: blob.size });
+    const menor = await encolher(S.fotos[i].url, 1600);
+    imagens.push({
+      nome: S.fotos[i].nome,
+      tipo: 'image/jpeg',
+      base64: menor.split(',')[1]
+    });
   }
 
   aviso('Salvando');
-  /* só insere. Pedir a linha de volta com .select() exigiria permissão de
-     leitura, que o visitante não tem — e o envio pareceria ter falhado. */
-  const res = await comLimite(
-    cliente.from(tabela).insert(dados),
-    15000, 'O banco de dados não respondeu');
-  if(res.error) throw new Error(res.error.message);
+  /* text/plain evita o pedido de permissão extra que o navegador
+     faria antes do envio, e que o Apps Script não responde */
+  const resposta = await comLimite(fetch(api, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ acao: 'enviar', dados: dados, imagens: imagens })
+  }), 45000, 'O painel demorou demais para responder');
 
-  return { codigo: codigo };
+  const r = await resposta.json();
+  if(!r || !r.ok) throw new Error((r && r.erro) || 'o painel recusou o envio');
+
+  return { codigo: r.codigo || codigo };
 }
 
 /* service worker: tela de erro quando faltar internet */
