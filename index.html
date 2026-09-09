@@ -414,6 +414,13 @@ textarea{min-height:112px;resize:vertical;line-height:1.6}
   padding:6px;color:var(--accent-light);
 }
 .done-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.proto{
+  font-family:'JetBrains Mono',monospace;font-size:.92em;letter-spacing:.08em;
+  color:var(--ir-1);background:rgba(31,174,95,.12);border:1px solid rgba(31,174,95,.35);
+  border-radius:8px;padding:2px 9px;white-space:nowrap;
+}
+.done-links .btn-zap{border-color:rgba(62,226,127,.45);color:#3ee27f}
+.done-links .btn-zap:hover{border-color:#3ee27f;background:rgba(62,226,127,.1)}
 .done-links .btn-ghost{flex:1;min-width:160px}
 
 /* ---------- rodapé ---------- */
@@ -715,6 +722,10 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       <p class="hint" id="doneText">Sua conversa comigo já abriu com todas as respostas preenchidas. É só apertar enviar.</p>
       <div class="dl-grid" id="dlGrid"></div>
       <div class="done-links">
+        <button class="btn-ghost btn-zap" id="btnWhats" type="button" style="display:none">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 12.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5 4.5 1.2.5 2.1.8 2.8.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Avisar no WhatsApp
+        </button>
         <a class="btn-ghost" href="https://enzokaleb01.github.io/Site-Nexa-Web/">Voltar para o site</a>
         <button class="btn-ghost" id="btnAgain" type="button">Enviar novamente</button>
       </div>
@@ -792,11 +803,11 @@ const PLANOS = [
   { id:'start', nome:'Start', sub:'Até 3 páginas', valor:289.90, ciclo:'unico', cor:'verde',
     itens:['Site de até 3 páginas','Layout moderno e responsivo','WhatsApp integrado','Domínio e hospedagem inclusos','1 alteração inclusa','Suporte básico'] },
   { id:'business', nome:'Business', sub:'Até 7 páginas', valor:369.90, ciclo:'unico', cor:'azul', destaque:true,
-    itens:['Site de até 7 páginas','Redes sociais integradas','WhatsApp integrado','Domínio e hospedagem inclusos','4 alterações inclusas','Relatório de acessos','Suporte dedicado'] },
+    itens:['Site de até 7 páginas','Redes sociais integradas','WhatsApp integrado','Domínio e hospedagem inclusos','Espaço de avaliações de clientes','4 alterações inclusas','Relatório de acessos','Suporte dedicado'] },
   { id:'premium', nome:'Premium', sub:'Até 15 páginas', valor:499.90, ciclo:'unico', cor:'roxo',
-    itens:['Site de até 15 páginas','Blog integrado','SEO básico (Google)','Domínio e hospedagem inclusos','Alterações ilimitadas','Relatório avançado','Suporte prioritário'] },
+    itens:['Site de até 15 páginas','Blog integrado','SEO básico (Google)','Domínio e hospedagem inclusos','Avaliações com nota e comentário','Alterações ilimitadas','Relatório avançado','Suporte prioritário'] },
   { id:'loja', nome:'Loja virtual', sub:'Loja completa', valor:769.90, ciclo:'unico', cor:'laranja',
-    itens:['Loja online completa','Produtos ilimitados','Carrinho de compras','Pagamentos online','Domínio e hospedagem inclusos','Cálculo de frete','Suporte prioritário'] }
+    itens:['Loja online completa','Produtos ilimitados','Carrinho de compras','Pagamentos online','Avaliações por produto','Domínio e hospedagem inclusos','Cálculo de frete','Suporte prioritário'] }
 ];
 
 const PACOTES = [
@@ -831,7 +842,7 @@ const LABELS = ['Tipo de projeto','Plano','Adicionais','Seu negócio','Dados do 
 
 const brl = v => 'R$ ' + v.toFixed(2).replace('.', ',');
 const $ = id => document.getElementById(id);
-const val = id => ($(id).value || '').trim();
+const val = id => { const el = $(id); return el ? (el.value || '').trim() : ''; };
 const estilo = cor => `--pc:${CORES[cor].c};--pcl:${CORES[cor].l};--pcs:${CORES[cor].s}`;
 
 /* ================= TIPOS ================= */
@@ -1004,9 +1015,10 @@ $('f_site_tel').addEventListener('input', mascara);
 
 /* ================= NAVEGAÇÃO ================= */
 const SETA = '<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>';
+const SETA_ENVIO = '<span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>';
 const ZAP = '<span class="arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 12.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.1.2 2.1 3.2 5 4.5 1.2.5 2.1.8 2.8.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></span>';
 
-const LABEL_FINAL = '<span class="zap-label">Enviar no <b>WhatsApp</b></span>' + ZAP;
+const LABEL_FINAL = '<span class="zap-label">Enviar briefing</span>' + SETA_ENVIO;
 
 function showStep(n, inicial){
   step = n;
@@ -1108,7 +1120,6 @@ async function enviar(){
   if(val('f_ramo')) L.push('Ramo: ' + val('f_ramo'));
   if(val('f_cidade')) L.push('Cidade: ' + val('f_cidade'));
   if(S.logo) L.push('Logo: ' + S.logo);
-  if(val('f_redes')) L.push('Redes: ' + val('f_redes'));
   L.push('');
 
   const site = [];
@@ -1156,36 +1167,46 @@ async function enviar(){
   const msg = encodeURIComponent(L.join('\n'));
   const web = 'https://wa.me/' + WHATSAPP + '?text=' + msg;
   const app = 'whatsapp://send?phone=' + WHATSAPP + '&text=' + msg;
-  const abrir = (href, target) => {
-    const a = document.createElement('a');
-    a.href = href;
-    if(target){ a.target = target; a.rel = 'noopener'; }
-    document.body.appendChild(a); a.click(); a.remove();
-  };
 
-  if(IS_MOBILE){
-    let saiu = false;
-    const marcar = () => { if(document.hidden) saiu = true; };
-    document.addEventListener('visibilitychange', marcar);
-    abrir(app, null);
-    setTimeout(() => {
-      document.removeEventListener('visibilitychange', marcar);
-      if(!saiu && !document.hidden) abrir(web, '_blank');
-    }, 1200);
-  } else {
-    abrir(web, '_blank');
+  function abrirWhats(){
+    const abrir = (href, target) => {
+      const a = document.createElement('a');
+      a.href = href;
+      if(target){ a.target = target; a.rel = 'noopener'; }
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    if(IS_MOBILE){
+      let saiu = false;
+      const marcar = () => { if(document.hidden) saiu = true; };
+      document.addEventListener('visibilitychange', marcar);
+      abrir(app, null);
+      setTimeout(() => {
+        document.removeEventListener('visibilitychange', marcar);
+        if(!saiu && !document.hidden) abrir(web, '_blank');
+      }, 1200);
+    } else {
+      abrir(web, '_blank');
+    }
   }
 
-  if(falhaPainel && S.fotos.length){
+  /* deu certo no painel: o WhatsApp vira um botão, não uma aba que abre sozinha.
+     deu errado: o WhatsApp é a saída de emergência e abre na hora. */
+  if(!ref) abrirWhats();
+  $('btnWhats').onclick = abrirWhats;
+
+  $('btnWhats').style.display = ref ? 'inline-flex' : 'none';
+
+  if(ref){
+    $('doneTitle').textContent = 'Informações enviadas';
+    $('doneText').innerHTML = 'Recebi tudo aqui' + (S.fotos.length ? ', imagens inclusive' : '') +
+      '. Seu protocolo é <b class="proto">' + ref.codigo + '</b> — guarde ele, é por onde eu te acho. ' +
+      'Vou responder no WhatsApp que você deixou.';
+    $('dlGrid').innerHTML = '';
+  } else if(falhaPainel && S.fotos.length){
     $('doneTitle').textContent = 'Falta anexar as fotos';
     $('doneText').textContent = 'A conversa no WhatsApp abriu com o briefing preenchido. Toque em cada imagem abaixo para salvar e depois anexe na conversa.';
     $('dlGrid').innerHTML = S.fotos.map((f,i) =>
       `<a class="dl-item" href="${f.url}" download="nexa-referencia-${i+1}.png"><img src="${f.url}" alt="Referência ${i+1}"><span>baixar</span></a>`).join('');
-  } else if(ref){
-    $('doneTitle').textContent = 'Briefing recebido';
-    $('doneText').textContent = 'Guardei tudo' + (S.fotos.length ? ', imagens inclusive' : '') +
-      ' com o protocolo ' + ref.codigo + '. A conversa no WhatsApp também já abriu, é só apertar enviar.';
-    $('dlGrid').innerHTML = '';
   } else if(S.fotos.length){
     $('doneTitle').textContent = 'Falta anexar as fotos';
     $('doneText').textContent = 'Sua conversa comigo abriu com o briefing preenchido. Toque em cada imagem abaixo para salvar e depois anexe na conversa.';
