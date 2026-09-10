@@ -6,6 +6,9 @@
 <title>Agendar meu site · Nexa Web</title>
 <meta name="description" content="Responda o briefing e agende a criação do seu site com a Nexa Web. Site, landing page ou loja virtual, com pagamento único e envio direto pelo WhatsApp.">
 <meta name="theme-color" content="#05050a">
+<link rel="icon" href="icone.svg" type="image/svg+xml">
+<link rel="icon" href="icone-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icone-192.png">
 <meta property="og:title" content="Agendar meu site · Nexa Web">
 <meta property="og:description" content="Monte o seu projeto em 8 etapas e envie direto pelo WhatsApp.">
 <meta property="og:type" content="website">
@@ -193,7 +196,7 @@ button,input,textarea,select{font:inherit;color:inherit}
 .step-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-light)}
 .step-count{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
 .track{height:2px;background:var(--line);margin-bottom:30px}
-.track i{display:block;height:100%;width:11.1%;background:linear-gradient(90deg,var(--ir-1),var(--ir-2),var(--ir-3),var(--ir-4));transition:width .6s var(--ease)}
+.track i{display:block;height:100%;width:10%;background:linear-gradient(90deg,var(--ir-1),var(--ir-2),var(--ir-3),var(--ir-4));transition:width .6s var(--ease)}
 
 .step{display:none}
 .step.active{display:block;animation:stepIn .55s var(--ease) both}
@@ -583,7 +586,7 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
 
     <!-- 5 -->
     <div class="step" data-step="5">
-      <h2>Dados que vão no site</h2>
+      <h2>Contato que vai no site</h2>
       <p class="hint">São as informações que qualquer visitante vai ver na página. Preencha só o que quiser publicar — o que ficar em branco simplesmente não aparece.</p>
 
       <div class="sec-tag">Contato público</div>
@@ -631,6 +634,44 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
 
     <!-- 6 -->
     <div class="step" data-step="6">
+      <h2>Conteúdo do site</h2>
+      <p class="hint">Agora o que vai escrito nas páginas. Não precisa caprichar no texto — eu ajusto tudo depois. Só me conte com suas palavras.</p>
+
+      <div class="sec-tag">Identidade</div>
+      <div class="two-col">
+        <div class="field">
+          <label for="f_dominio">Endereço que você quer</label>
+          <input type="text" id="f_dominio" placeholder="acaidanaty.com.br">
+        </div>
+        <div class="field">
+          <label for="f_slogan">Slogan ou frase da marca</label>
+          <input type="text" id="f_slogan" placeholder="O açaí mais cremoso da cidade">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f_sobre">Sobre o negócio</label>
+        <textarea id="f_sobre" placeholder="Há quanto tempo existe, o que faz diferente, quem é o dono... escreva do seu jeito"></textarea>
+      </div>
+
+      <div class="sec-tag">O que você vende</div>
+      <div class="field">
+        <label for="f_servicos">Principais produtos ou serviços</label>
+        <textarea id="f_servicos" placeholder="Um por linha, com o preço se quiser mostrar no site"></textarea>
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label for="f_pagamento">Formas de pagamento</label>
+          <input type="text" id="f_pagamento" placeholder="Pix, cartão, dinheiro...">
+        </div>
+        <div class="field">
+          <label for="f_area">Área de atendimento</label>
+          <input type="text" id="f_area" placeholder="Fortaleza e região, ou todo o Brasil">
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="step" data-step="7">
       <h2>O que o site precisa ter?</h2>
       <p class="hint">Marque tudo que fizer sentido. Não precisa se limitar ao plano — eu te oriento depois se algo pedir outro pacote.</p>
       <div class="chips" id="funcChips"></div>
@@ -640,8 +681,8 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       </div>
     </div>
 
-    <!-- 7 -->
-    <div class="step" data-step="7">
+    <!-- 8 -->
+    <div class="step" data-step="8">
       <h2>Estilo visual</h2>
       <p class="hint">Como você quer que o site pareça na primeira olhada.</p>
       <div class="field">
@@ -658,8 +699,8 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       </div>
     </div>
 
-    <!-- 8 -->
-    <div class="step" data-step="8">
+    <!-- 9 -->
+    <div class="step" data-step="9">
       <h2>Fotos e referências</h2>
       <p class="hint">Envie logo, fotos dos produtos ou prints de sites que te agradam. Até 5 imagens.</p>
       <label class="drop" id="drop" for="fileInput">
@@ -678,8 +719,8 @@ footer .foot-txt{font-size:.78rem;color:var(--ink-faint);max-width:42ch}
       </div>
     </div>
 
-    <!-- 9 -->
-    <div class="step" data-step="9">
+    <!-- 10 -->
+    <div class="step" data-step="10">
       <h2>Seus dados</h2>
       <p class="hint">Último passo, e agora é sobre você, não sobre o site. Como eu falo contigo e qual o melhor momento.</p>
       <div class="two-col">
@@ -837,8 +878,8 @@ const PRAZOS = ['O quanto antes','Em até 15 dias','Em até 30 dias','Sem pressa
 /* ================= ESTADO ================= */
 const S = { tipo:null, plano:null, adicionais:[], logo:null, funcoes:[], estilo:null, prazo:null, fotos:[] };
 let step = 1;
-const TOTAL_STEPS = 9;
-const LABELS = ['Tipo de projeto','Plano','Adicionais','Seu negócio','Dados do site','Funcionalidades','Estilo visual','Fotos','Contato'];
+const TOTAL_STEPS = 10;
+const LABELS = ['Tipo de projeto','Plano','Adicionais','Seu negócio','Contato do site','Conteúdo do site','Funcionalidades','Estilo visual','Fotos','Contato'];
 
 const brl = v => 'R$ ' + v.toFixed(2).replace('.', ',');
 const $ = id => document.getElementById(id);
@@ -1062,7 +1103,7 @@ function validate(n){
     if(!ok) focarErro($('f_negocio'));
     return ok;
   }
-  if(n === 9){
+  if(n === 10){
     const nomeOk = !!val('f_nome'), zapOk = val('f_whats').replace(/\D/g,'').length >= 10;
     $('f_nome').classList.toggle('err', !nomeOk);
     $('f_whats').classList.toggle('err', !zapOk);
@@ -1134,6 +1175,19 @@ async function enviar(){
   if(site.length){
     L.push('*DADOS QUE VÃO NO SITE*');
     site.forEach(x => L.push(x));
+    L.push('');
+  }
+
+  const conteudo = [];
+  if(val('f_dominio')) conteudo.push('Endereço desejado: ' + val('f_dominio'));
+  if(val('f_slogan')) conteudo.push('Slogan: ' + val('f_slogan'));
+  if(val('f_pagamento')) conteudo.push('Pagamento: ' + val('f_pagamento'));
+  if(val('f_area')) conteudo.push('Atende: ' + val('f_area'));
+  if(val('f_sobre')) conteudo.push('Sobre: ' + val('f_sobre'));
+  if(val('f_servicos')) conteudo.push('Produtos/serviços: ' + val('f_servicos'));
+  if(conteudo.length){
+    L.push('*CONTEÚDO DO SITE*');
+    conteudo.forEach(x => L.push(x));
     L.push('');
   }
 
@@ -1296,6 +1350,10 @@ function dadosDoBriefing(codigo){
       endereco: val('f_site_end'), horario: val('f_site_horario'),
       instagram: val('f_insta'), facebook: val('f_face'),
       youtube: val('f_youtube'), tiktok: val('f_tiktok')
+    },
+    conteudo: {
+      dominio: val('f_dominio'), slogan: val('f_slogan'), sobre: val('f_sobre'),
+      servicos: val('f_servicos'), pagamento: val('f_pagamento'), area: val('f_area')
     },
     escopo: {
       funcoes: S.funcoes, paginas: val('f_paginas'),
